@@ -19,6 +19,7 @@ export default class Frends extends React.Component {
       isFocused:false, 
       messagesList:[], 
       fId:props.route.params.data.userId,
+      fPhotoURL:props.route.params.data.photoURL,
       userId: '',
       email : '', 
       name : '', 
@@ -33,6 +34,7 @@ export default class Frends extends React.Component {
     database.ref('users').child(userId).once('value').then(function(snapshot){
       const exists = (snapshot.val() !== null)
       if(exists) data = snapshot.val(); 
+      console.log('data.photoURL', data.photoURL);
       
         that.setState({
           userId: data.userId,
@@ -50,12 +52,15 @@ export default class Frends extends React.Component {
         await that.fetchUserInfo(user.uid);
         await that.state.dbRef.child(user.uid).child(that.state.fId)
         .on('child_added', (value)=>{ 
+          // console.log('val->',value.val());
+          
           that.setState((prevState)=>{
             return {
               messagesList:[...prevState.messagesList, value.val()]
             }
           })
-        }) 
+        })  
+        
       }else{
         that.setState({
           loggedin:false
@@ -65,7 +70,6 @@ export default class Frends extends React.Component {
   }
 
   onSend(messages = []) {
-    // console.log('pesan ->',messagesList[0].user);
     
     let msgId = this.state.dbRef.child(this.state.userId).child(this.state.fId).push().key;
     let updates = {};
@@ -73,11 +77,7 @@ export default class Frends extends React.Component {
       _id:messages[0]._id,
       createdAt:messages[0].createdAt,
       text:messages[0].text,
-      user:{
-        _id:this.state.email,
-        name:this.state.name,
-        avatar: this.state.photoURL,
-      }
+      user:messages[0].user,
     }
     updates[this.state.userId+'/'+this.state.fId+'/'+msgId]=message;
     updates[this.state.fId+'/'+this.state.userId+'/'+msgId]=message;
@@ -89,13 +89,17 @@ export default class Frends extends React.Component {
     // console.log('p =>',this.props.route.params.data.photoURL); 
     //this.props.route.params.data.fId, fName, fPhotoURL
     // this.props.userData.uid
+    // console.log('pesan --> ', this.state.messagesList);
     
+    console.log('pesan ->',this.state.messagesList);
     return (
       <GiftedChat
         messages={this.state.messagesList}
         onSend={messages => this.onSend(messages)}
         user={{
           _id: this.state.email,
+          name:this.state.name,
+          avatar:this.state.photoURL,
         }}
       />
     )

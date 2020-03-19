@@ -30,15 +30,10 @@ export default class Maps extends React.Component {
     this.state = {
       user:'',
       friendsLocation:[],
-      curentPosition: {
-        latitude: -6.3919103,
-        longitude: 106.8266298,
-        latitudeDelta: 0,
-        longitudeDelta: 0.05,
-      },
+      curentPosition: [],
       mapRegion: null,
-      latitude: -6.3919103,
-      longitude: 106.8266298
+      latitude: 0,
+      longitude: 0
     };
   }
 
@@ -54,8 +49,8 @@ export default class Maps extends React.Component {
   getCoordinate = () => {
     navigator.geolocation.getCurrentPosition(
       position => {
-        // Alert.alert(position)
-        // console.log('lokasi :',position.coords);
+        // console.log('position ->',position);
+        
         const {longitude, latitude} = position.coords;
         let data = {
           latitude: latitude,
@@ -63,7 +58,7 @@ export default class Maps extends React.Component {
           latitudeDelta: 0,
           longitudeDelta: 0.05,
         };
-        console.warn(data);
+        // console.warn(data);
         this.setState({
           curentPosition: data,
           mapRegion:data
@@ -94,8 +89,6 @@ export default class Maps extends React.Component {
 
   getUser = () => {
     f.auth().onAuthStateChanged(async user => { 
-      console.log('email user ->',user.email);
-      
       await this.setState({
         user: user.email
       }); 
@@ -110,8 +103,6 @@ export default class Maps extends React.Component {
   };
 
   render(){
-    // console.log('friendsLocation ->', this.state.friendsLocation);
-    
     const data = this.state.curentPosition;
     const mapStyle = [
       {

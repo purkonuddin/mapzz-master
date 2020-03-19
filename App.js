@@ -109,14 +109,6 @@ export default class App extends React.Component {
     }
   }
 
-  signUserOut=()=>{
-    auth.signOut()
-    .then(()=>{console.log('loged out')})
-    .catch((error)=>{ 
-      console.log('error', error) 
-    })
-  }
-
   handleFocus=event=>{
     this.setState({isFocus:true});
     if(this.props.onFocus){
@@ -145,7 +137,7 @@ export default class App extends React.Component {
                 {props => <Maps {...props} userData={this.state.userData}/>}
               </Stack.Screen>
               <Stack.Screen name="Frends" options={{ title: 'Chat' }}>
-                {props => <Frends {...props} userData={this.state.userData}/>}
+                {props => <Frends {...props}/>}
               </Stack.Screen>
               <Stack.Screen name="Chat" options={{ title: 'Chat List' }}>
                 {props => <Chat {...props} userData={this.state.userData}/>}
