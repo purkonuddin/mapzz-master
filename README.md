@@ -1,10 +1,9 @@
 <h1 align="center">
   <br>
-  Mapzz
-  <br>
- <small>Realtime Chat and Maps Marker with Google Maps</small>
+  Mapzz 
   <br>
 </h1>
+<p><small align="center">Realtime Chat and Maps Marker with Google Maps</small></p>
 
 <p align="center">
   <img src="https://img.shields.io/badge/Node.js-v12.14.1-success">
